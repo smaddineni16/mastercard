@@ -25,6 +25,8 @@ gradle bootRun
 
 4) Launch the URL http://localhost:8080/connected?origin=new york& destination=washington dc
   
+  The parameters can be changed to see the connection between 2 differernt cities
+  
 # Test cases
 
 In order to run the test cases, you can execute the below command
