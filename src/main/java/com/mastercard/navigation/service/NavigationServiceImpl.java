@@ -85,7 +85,7 @@ public class NavigationServiceImpl implements NavigationService {
     }
 
     /**
-     * This will return true if the Origin is connected to Destination
+     * This will return true if the Origin is connected to Destination by using Depth First Search Algorithm
      *
      * @param origin Origin City
      * @param destination Destination City
@@ -107,6 +107,13 @@ public class NavigationServiceImpl implements NavigationService {
         return false;
     }
 
+    /**
+     * This will return true if the Origin is connected to Destination by using Breadth First Search Algorithm
+     *
+     * @param origin Origin City
+     * @param destination Destination City
+     * @return true, if both the cities are connected else false
+     */
     public boolean isConnectedWithDestination_BreadthFirst_Search(String origin, String destination) {
         Optional<String> startingCity = roadGraph.vertexSet().stream()
                 .filter(city -> city.equalsIgnoreCase(origin))
