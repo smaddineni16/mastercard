@@ -3,6 +3,7 @@ package com.mastercard.navigation.service;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -45,10 +46,9 @@ public class NavigationServiceImpl implements NavigationService {
         // Check for the NULL conditions
         if (!StringUtils.isEmpty(startingCity) || !StringUtils.isEmpty(destinationCity)) {
             if (roadGraph == null) {
-                System.out.println("Creating Graph");
                 roadGraph = createGraph();
             }
-            return isConnectedWithDestination(startingCity.trim().toLowerCase(), destinationCity.trim().toLowerCase());
+            return isConnectedWithDestination_BreadthFirst_Search(startingCity.trim().toLowerCase(), destinationCity.trim().toLowerCase());
         }
 
         return false;
@@ -91,13 +91,29 @@ public class NavigationServiceImpl implements NavigationService {
      * @param destination Destination City
      * @return true, if both the cities are connected else false
      */
-    public boolean isConnectedWithDestination(String origin, String destination) {
+    public boolean isConnectedWithDestination_DepthFirst_Search(String origin, String destination) {
         Optional<String> startingCity = roadGraph.vertexSet().stream()
                 .filter(city -> city.equalsIgnoreCase(origin))
                 .findAny();
         if (!startingCity.isPresent()) return false; // If Origin is not in the Graph, return false
 
         Iterator<String>  cityIterator = new DepthFirstIterator<>(roadGraph, startingCity.get());
+        while (cityIterator.hasNext()) {
+            String c = cityIterator.next();
+            if (c.equals(destination)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isConnectedWithDestination_BreadthFirst_Search(String origin, String destination) {
+        Optional<String> startingCity = roadGraph.vertexSet().stream()
+                .filter(city -> city.equalsIgnoreCase(origin))
+                .findAny();
+        if (!startingCity.isPresent()) return false; // If Origin is not in the Graph, return false
+
+        Iterator<String>  cityIterator = new BreadthFirstIterator<>(roadGraph, startingCity.get());
         while (cityIterator.hasNext()) {
             String c = cityIterator.next();
             if (c.equals(destination)) {
