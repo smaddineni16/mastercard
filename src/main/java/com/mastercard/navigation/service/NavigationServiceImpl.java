@@ -73,12 +73,14 @@ public class NavigationServiceImpl implements NavigationService {
         }
         allRoads.forEach(road -> {
             String[] cities = road.split(",");
-            String origin = cities[0].trim().toLowerCase();
-            String destination = cities[1].trim().toLowerCase();
-            graph.addVertex(origin);
-            graph.addVertex(destination);
-            graph.addEdge(origin, destination);
-
+            // Make sure add the cities to graph, only when we have 2 cities on a single line
+            if (cities.length == 2) {
+                String origin = cities[0].trim().toLowerCase();
+                String destination = cities[1].trim().toLowerCase();
+                graph.addVertex(origin);
+                graph.addVertex(destination);
+                graph.addEdge(origin, destination);
+            }
         });
 
         return graph;
