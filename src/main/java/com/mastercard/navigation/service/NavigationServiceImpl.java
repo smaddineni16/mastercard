@@ -75,11 +75,14 @@ public class NavigationServiceImpl implements NavigationService {
             String[] cities = road.split(",");
             // Make sure add the cities to graph, only when we have 2 cities on a single line
             if (cities.length == 2) {
-                String origin = cities[0].trim().toLowerCase();
-                String destination = cities[1].trim().toLowerCase();
-                graph.addVertex(origin);
-                graph.addVertex(destination);
-                graph.addEdge(origin, destination);
+                String origin = cities[0].trim();
+                String destination = cities[1].trim();
+                // Add them to the graph only when both of them are not null
+                if (!StringUtils.isEmpty(origin) && !StringUtils.isEmpty(destination)) {
+                    graph.addVertex(origin.toLowerCase());
+                    graph.addVertex(destination.toLowerCase());
+                    graph.addEdge(origin.toLowerCase(), destination.toLowerCase());
+                }
             }
         });
 
